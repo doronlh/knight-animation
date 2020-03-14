@@ -3,7 +3,6 @@ from cairosvg import svg2png
 from chess import Board, SquareSet, square
 from chess.svg import board as svg_board
 from imageio import imread, mimwrite
-from webbrowser import Error as WebbrowserError
 
 _WEBBROWSERS_TO_TRY = ['chrome', 'firefox', 'safari', 'windows-default']
 
@@ -91,7 +90,7 @@ def _get_webbrowser(webbrowser_name):
         for browser_name in _WEBBROWSERS_TO_TRY:
             try:
                 return webbrowser.get(browser_name)
-            except WebbrowserError:
+            except webbrowser.Error:
                 continue
         return webbrowser.get()
 

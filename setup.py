@@ -8,5 +8,10 @@ setup(
     author='Doron Horwitz',
     author_email='doron@at-bay.com',
     packages=['knight_animation'],
-    zip_safe=False
+    zip_safe=False,
+    install_requires=[
+        'cairosvg',
+        'imageio',
+        'python-chess',
+    ],
 )
