@@ -3,6 +3,8 @@ from cairosvg import svg2png
 from chess import Board, SquareSet, square
 from chess.svg import board as svg_board
 from imageio import imread, mimwrite
+from os.path import abspath
+from tempfile import NamedTemporaryFile
 
 _WEBBROWSERS_TO_TRY = ['chrome', 'firefox', 'safari', 'windows-default']
 
@@ -95,7 +97,36 @@ def _get_webbrowser(webbrowser_name):
         return webbrowser.get()
 
 
-def animate_knight(positions, animation_filename=None, open_in_webbrowser=True, webbrowser_name=None):
+def _generate_animation_filename(animation_filename):
+
+    """
+    Determine the absolute filename to be used to save the animation. If it does not have a .gif extension, one will be
+    added automatically. If the passed in filename is None, then generated a temporary filename.
+
+    Parameters
+    ----------
+    animation_filename: str
+        an absolute or relative filename to be converted into an absolute filename to which the gif animation can be
+        written. Can be None, in which case a temporary filename will be returned
+
+    Returns
+    -------
+    str
+        The absolute filename to be written to
+
+    """
+    if animation_filename:
+        if not animation_filename.lower().endswith('.gif'):
+            animation_filename += '.gif'
+        animation_filename = abspath(animation_filename)
+    else:
+        animation_filename = NamedTemporaryFile(delete=False, suffix='.gif').name
+
+    return animation_filename
+
+
+def animate_knight(positions, animation_filename=None, open_in_webbrowser=True, webbrowser_name=None,
+                   frame_duration=0.3):
     """
 
     Parameters
@@ -108,6 +139,8 @@ def animate_knight(positions, animation_filename=None, open_in_webbrowser=True, 
         should the browser open and show the GIF animation?
     webbrowser_name: str
         if the open_browser=True, then the name  of the webbrowser to use. See _get_webbrowser() function
+    frame_duration: float
+        the time in seconds to show each frame of the animation. For fractions of a second can also be a float
 
     """
 
@@ -125,7 +158,8 @@ def animate_knight(positions, animation_filename=None, open_in_webbrowser=True, 
         frames.append(imread(png_bytes))
 
     # write animation using imageio
-    mimwrite(animation_filename, frames, duration=1)
+    animation_filename = _generate_animation_filename(animation_filename)
+    mimwrite(animation_filename, frames, duration=frame_duration)
 
     # open in browser
     if open_in_webbrowser:
