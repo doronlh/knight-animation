@@ -1,0 +1,1 @@
+from knight_animation.animate import animate_knight
