@@ -77,7 +77,7 @@ def _get_webbrowser(webbrowser_name):
     Parameters
     ----------
     webbrowser_name: str
-        the name of the webbrowser. See https://docs.python.org/2/library/webbrowser.html#webbrowser.register for a list
+        the name of the webbrowser. See https://docs.python.org/3/library/webbrowser.html#webbrowser.register for a list
         of possibilities
 
     Returns
