@@ -10,6 +10,7 @@ setup(
     packages=['knight_animation'],
     zip_safe=False,
     install_requires=[
+        'Pillow < 7.1.0',
         'cairosvg',
         'imageio',
         'python-chess',
